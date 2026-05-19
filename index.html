@@ -1,66 +1,59 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Mining App</title>
-
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-    <style>
-        body{
-            background:#0f172a;
-            color:white;
-            font-family:Arial;
-            text-align:center;
-            padding-top:50px;
-        }
-
-        button{
-            background:#22c55e;
-            border:none;
-            padding:15px 30px;
-            border-radius:10px;
-            color:white;
-            font-size:20px;
-            cursor:pointer;
-        }
-    </style>
-</head>
-<body>
-
-<h1>🚀 TG Mining App</h1>
-
-<h2 id="user">Loading...</h2>
-
-<h1 id="balance">0</h1>
-
-<button onclick="mine()">
-    ⛏ Mine
-</button>
-
 <script>
-    const tg = window.Telegram.WebApp;
 
-    tg.expand();
+const tg = window.Telegram.WebApp;
 
-    let balance = 0;
+tg.expand();
 
-    const user = tg.initDataUnsafe?.user;
+const user = tg.initDataUnsafe?.user;
 
-    if(user){
-        document.getElementById("user").innerHTML =
-            "Welcome " + user.first_name;
-    }else{
-        document.getElementById("user").innerHTML =
-            "Open from Telegram";
-    }
+let telegram_id = 1;
+let username = "guest";
 
-    function mine(){
-        balance++;
+if(user){
+    telegram_id = user.id;
+    username = user.username;
+}
 
-        document.getElementById("balance")
-            .innerHTML = balance;
-    }
+document.getElementById("user")
+.innerHTML = username;
+
+async function login(){
+
+    const req = await fetch("/login", {
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify({
+            telegram_id,
+            username
+        })
+    });
+
+    const data = await req.json();
+
+    document.getElementById("balance")
+    .innerHTML = data.balance;
+}
+
+login();
+
+async function mine(){
+
+    const req = await fetch("/mine", {
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify({
+            telegram_id
+        })
+    });
+
+    const data = await req.json();
+
+    document.getElementById("balance")
+    .innerHTML = data.balance;
+}
+
 </script>
-
-</body>
-</html>
