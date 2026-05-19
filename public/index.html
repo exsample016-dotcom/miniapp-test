@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mining App</title>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+
+<h1>MINING APP</h1>
+
+<div id="user"></div>
+
+<script>
+    const tg = window.Telegram.WebApp;
+
+    tg.expand();
+
+    const user = tg.initDataUnsafe.user;
+
+    document.getElementById("user").innerHTML =
+        "Hello " + user.first_name;
+</script>
+
+</body>
+</html>
