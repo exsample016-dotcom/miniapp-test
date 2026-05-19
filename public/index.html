@@ -1,66 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Mining App</title>
+
+    <title>Telegram Mining</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    <style>
-        body{
-            background:#0f172a;
-            color:white;
-            font-family:Arial;
-            text-align:center;
-            padding-top:50px;
-        }
+    <link rel="stylesheet" href="style.css">
 
-        button{
-            background:#22c55e;
-            border:none;
-            padding:15px 30px;
-            border-radius:10px;
-            color:white;
-            font-size:20px;
-            cursor:pointer;
-        }
-    </style>
 </head>
 <body>
 
-<h1>🚀 TG Mining App</h1>
+<div class="container">
 
-<h2 id="user">Loading...</h2>
+    <h1>🚀 TG MINING</h1>
 
-<h1 id="balance">0</h1>
+    <div class="card">
 
-<button onclick="mine()">
-    ⛏ Mine
-</button>
+        <h2 id="user">Guest</h2>
 
-<script>
-    const tg = window.Telegram.WebApp;
+        <div class="stats">
 
-    tg.expand();
+            <div>
+                <span>💰 Balance</span>
+                <h3 id="balance">0</h3>
+            </div>
 
-    let balance = 0;
+            <div>
+                <span>⚡ Power</span>
+                <h3 id="power">1</h3>
+            </div>
 
-    const user = tg.initDataUnsafe?.user;
+            <div>
+                <span>🏆 Level</span>
+                <h3 id="level">1</h3>
+            </div>
 
-    if(user){
-        document.getElementById("user").innerHTML =
-            "Welcome " + user.first_name;
-    }else{
-        document.getElementById("user").innerHTML =
-            "Open from Telegram";
-    }
+        </div>
 
-    function mine(){
-        balance++;
+        <button onclick="mine()" id="mineBtn">
+            ⛏ START MINING
+        </button>
 
-        document.getElementById("balance")
-            .innerHTML = balance;
-    }
-</script>
+    </div>
+
+    <div class="leaderboard">
+
+        <h2>🏆 Leaderboard</h2>
+
+        <div id="leaders"></div>
+
+    </div>
+
+</div>
+
+<script src="app.js"></script>
 
 </body>
 </html>

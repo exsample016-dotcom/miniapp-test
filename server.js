@@ -24,6 +24,18 @@ const UserSchema = new mongoose.Schema({
     balance: {
         type: Number,
         default: 0
+    },
+    level: {
+        type: Number,
+        default: 1
+    },
+    power: {
+        type: Number,
+        default: 1
+    },
+    updatedAt: {
+        type: Date,
+        default: Date.now
     }
 });
 
@@ -40,7 +52,9 @@ app.post("/login", async (req, res) => {
         user = await User.create({
             telegram_id,
             username,
-            balance: 0
+            balance: 0,
+            level: 1,
+            power: 1
         });
     }
 
@@ -53,13 +67,37 @@ app.post("/mine", async (req, res) => {
 
     let user = await User.findOne({ telegram_id });
 
-    user.balance += 1;
+    if(!user){
+        return res.status(404).json({
+            error: "User not found"
+        });
+    }
+
+    user.balance += user.power;
+
+    if(user.balance >= user.level * 100){
+        user.level += 1;
+        user.power += 1;
+    }
+
+    user.updatedAt = Date.now();
 
     await user.save();
 
     res.json({
-        balance: user.balance
+        balance: user.balance,
+        level: user.level,
+        power: user.power
     });
+});
+
+app.get("/leaderboard", async (req, res) => {
+
+    const users = await User.find()
+    .sort({ balance: -1 })
+    .limit(10);
+
+    res.json(users);
 });
 
 app.get("/", (req, res) => {
@@ -69,5 +107,5 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-    console.log(`SERVER RUNNING ${PORT}`);
+    console.log(`SERVER RUNNING ON ${PORT}`);
 });
