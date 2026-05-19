@@ -4,22 +4,62 @@
     <title>Mining App</title>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <style>
+        body{
+            background:#0f172a;
+            color:white;
+            font-family:Arial;
+            text-align:center;
+            padding-top:50px;
+        }
+
+        button{
+            background:#22c55e;
+            border:none;
+            padding:15px 30px;
+            border-radius:10px;
+            color:white;
+            font-size:20px;
+            cursor:pointer;
+        }
+    </style>
 </head>
 <body>
 
-<h1>MINING APP</h1>
+<h1>🚀 TG Mining App</h1>
 
-<div id="user"></div>
+<h2 id="user">Loading...</h2>
+
+<h1 id="balance">0</h1>
+
+<button onclick="mine()">
+    ⛏ Mine
+</button>
 
 <script>
     const tg = window.Telegram.WebApp;
 
     tg.expand();
 
-    const user = tg.initDataUnsafe.user;
+    let balance = 0;
 
-    document.getElementById("user").innerHTML =
-        "Hello " + user.first_name;
+    const user = tg.initDataUnsafe?.user;
+
+    if(user){
+        document.getElementById("user").innerHTML =
+            "Welcome " + user.first_name;
+    }else{
+        document.getElementById("user").innerHTML =
+            "Open from Telegram";
+    }
+
+    function mine(){
+        balance++;
+
+        document.getElementById("balance")
+            .innerHTML = balance;
+    }
 </script>
 
 </body>
